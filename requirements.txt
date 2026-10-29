@@ -1,0 +1,15 @@
+# Subset of the upstream ShallKnow requirements.txt that is needed for
+# shallknow/wikipedia_extractor_final.py, without the CUDA-only packages
+# (nvidia-*, triton, auto_gptq) so it also installs on macOS / Apple Silicon.
+torch==2.3.1
+transformers==4.41.2
+maverick-coref==1.0.3
+fastcoref==2.1.6
+spacy==3.7.5
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
+numpy==1.26.4
+rdflib==7.0.0
+requests==2.32.3
+pandas==2.2.2
+jupyter
+matplotlib
