@@ -4,9 +4,14 @@ import json
 import os
 import re
 class LLMQuery:
-    def __init__(self, url: str):
-        self.api_url = url
-        self.api_key = "sk-69cb0447"
+    def __init__(self, url: str = "http://localhost:11434"):
+        # ADRES_MODELU / TOKEN_MODELU point to a remote Ollama behind an auth gateway.
+        # Without them we fall back to a local Ollama, like the original code.
+        base = os.environ.get("ADRES_MODELU", url).rstrip("/")
+        if base.endswith("/api/generate"):
+            base = base[:-len("/api/generate")]
+        self.api_url = base + "/api/generate"
+        self.api_key = os.environ.get("TOKEN_MODELU")
 
 
     def remove_thinking_part(self, response):
@@ -50,7 +55,8 @@ class LLMQuery:
 
     def get_response_from_api_call(self, page_content: str, entity1: str, entity2: str, model: str):
         print("ollama starts here")
-        url = os.environ.get('OLLAMA_URL', default='http://localhost:11434/api/generate')
+        url = os.environ.get('OLLAMA_URL', default=self.api_url)
+        headers = {"X-Api-Key": self.api_key} if self.api_key else {}
         prompt = self.generate_relationship_prompt(entity1, entity2, page_content)
         data = {
             "model": model,
@@ -61,7 +67,7 @@ class LLMQuery:
         }
 
         try:
-            response = requests.post(url, json=data)
+            response = requests.post(url, json=data, headers=headers)
             response.raise_for_status()
 
             full_response = ""

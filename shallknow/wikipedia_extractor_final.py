@@ -10,22 +10,38 @@ from maverick import Maverick
 from rdflib import Graph, URIRef
 from rdflib.namespace import RDF
 import sys
+import argparse
+import torch
 
 from llm_query_final import LLMQuery
 
 
-logging.basicConfig(filename='wikipedia_processor.log', level=logging.ERROR, format='%(asctime)s %(message)s')
+parser = argparse.ArgumentParser(description="Entity-centric paragraph simplification (ShallKnow).")
+parser.add_argument("model", help="Ollama model name, e.g. deepseek-r1:14b")
+parser.add_argument("--input", default="./reified/BPDP_train_reified.nt", help="reified .nt file with the claims")
+parser.add_argument("--output-dir", default="wikipedia_processed_bpdp")
+parser.add_argument("--limit", type=int, default=None, help="process only the first N true statements (for test runs)")
+parser.add_argument("--max-links", type=int, default=None, help="follow at most N outgoing links per page (for test runs)")
+cli_args = parser.parse_args()
 
-input_file = './reified/BPDP_train_reified.nt'
-output_dir = 'wikipedia_processed_bpdp'
+input_file = cli_args.input
+output_dir = cli_args.output_dir
 os.makedirs(output_dir, exist_ok=True)
 
-processed_titles_file = 'processed_titles_bpdp.txt'
-processed_files_file = 'processed_files_bpdp.txt'
-processed_hashes_file = 'processed_hashes_bpdp.txt'
-error_log_file = 'content_fetch_error_titles_bpdp.txt'
-last_id_file = 'last_id_bpdp.txt'
-m_coref_model = Maverick(hf_name_or_path="sapienzanlp/maverick-mes-ontonotes", device="cuda:0")
+# bookkeeping files live next to the output so that every run is self-contained
+logging.basicConfig(filename=os.path.join(output_dir, 'wikipedia_processor.log'), level=logging.ERROR, format='%(asctime)s %(message)s')
+processed_titles_file = os.path.join(output_dir, 'processed_titles_bpdp.txt')
+processed_files_file = os.path.join(output_dir, 'processed_files_bpdp.txt')
+processed_hashes_file = os.path.join(output_dir, 'processed_hashes_bpdp.txt')
+error_log_file = os.path.join(output_dir, 'content_fetch_error_titles_bpdp.txt')
+last_id_file = os.path.join(output_dir, 'last_id_bpdp.txt')
+
+# Wikipedia rejects the default python-requests user agent (HTTP 403)
+WIKI_HEADERS = {"User-Agent": "no-need-to-be-so-big/0.1 (university project; https://github.com/ZiarnoM/no-need-to-be-so-big)"}
+
+# Maverick does not run on Apple MPS (it builds float64 tensors), so on a Mac it goes to CPU
+coref_device = os.environ.get("COREF_DEVICE", "cuda:0" if torch.cuda.is_available() else "cpu")
+m_coref_model = Maverick(hf_name_or_path="sapienzanlp/maverick-mes-ontonotes", device=coref_device)
 
 
 def resolve_coreferences(text, title, use_maverick):
@@ -238,7 +254,7 @@ def fetch_wikipedia_content(title):
         "pllimit": "max",
         "titles": title
     }
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, headers=WIKI_HEADERS)
     data = response.json()
     query = data.get("query", {})
     # Handle redirects if present
@@ -257,7 +273,7 @@ def fetch_wikipedia_content(title):
         # Continue fetching additional links if available
         while "continue" in data and "plcontinue" in data["continue"]:
             params["plcontinue"] = data["continue"]["plcontinue"]
-            response = requests.get(url, params=params)
+            response = requests.get(url, params=params, headers=WIKI_HEADERS)
             data = response.json()
             pages = data.get("query", {}).get("pages", {})
             for pid, p_data in pages.items():
@@ -340,11 +356,13 @@ def process_triples(model:str):
         model (str): Name of the local LLM model to use for text refinement.
     """
     data = load_data(input_file)
+    if cli_args.limit:
+        data = sorted(data)[:cli_args.limit]
     processed_titles = load_processed_titles()
     processed_files = load_processed_files()
     processed_hashes = load_processed_hashes()
     last_id = load_last_id()
-    llm = LLMQuery("http://localhost:11434/api/generate")
+    llm = LLMQuery()
 
     for subject_uri, _, object_uri in data:
         # Extract and normalize titles
@@ -402,6 +420,9 @@ def process_triples(model:str):
                 continue
             else:
                 llm_coreference_text = co_ref
+
+            if cli_args.max_links is not None:
+                links = links[:cli_args.max_links]
 
             # Process outgoing links first
             for link in links:
@@ -467,6 +488,4 @@ def process_triples(model:str):
 if __name__ == '__main__':
 #    reprocess_files()
 #    exit(1)
-    args = sys.argv[1:]  # Exclude script name
-    modl = args[0] # LLM model name passed from command-line
-    process_triples(model=modl)
+    process_triples(model=cli_args.model)
