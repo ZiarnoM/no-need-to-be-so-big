@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+.DS_Store
+.env
+
+# downloaded / generated data
+data/raw/*
+data/input/*
+!data/**/.gitkeep
+results/*
+!results/.gitkeep
+*.log
