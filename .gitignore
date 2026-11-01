@@ -12,3 +12,5 @@ data/input/*
 results/*
 !results/.gitkeep
 *.log
+data/cache/
+
