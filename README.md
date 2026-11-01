@@ -17,7 +17,8 @@ shallknow/      code taken from the original repo (with small changes, see below
 tools/          our helper scripts (data download, input preparation, model check)
 data/raw/       benchmark files from Zenodo (not in git, use tools/download_data.sh)
 data/input/     inputs prepared for the extractor (not in git)
-notebooks/      exploratory analysis
+notebooks/      exploratory analysis (figures in notebooks/figures/)
+dashboard/      the EDA results as an interactive page (React)
 results/        outputs of the runs (not in git)
 ```
 
@@ -58,6 +59,41 @@ English Wikipedia title and writes it back as `http://dbpedia.org/resource/<Titl
 Entities without an English article are left unchanged and later skipped by the extractor
 (9 of 125 in BPDP train, 15 of 136 in BPDP test).
 
+### Datasets
+
+We use **FAVEL-DS** as the main dataset and **BPDP** for quick tests, both from the paper.
+FactBench Mix is left out: in the published files about half of its statements are broken
+(true and false statements merged under one IRI). Details in the exploratory analysis below.
+
+## Exploratory analysis
+
+```bash
+tools/download_data.sh
+cd notebooks && jupyter lab 01_eda.ipynb
+```
+
+`notebooks/01_eda.ipynb` checks the published files against the paper, looks at relations and
+entities, how the false statements were made, Wikipedia coverage, the cost of a full ShallKnow run
+and whether the Wikipedia text contains evidence for the statements. The first run queries the
+Wikidata and Wikipedia APIs (a few minutes); responses are cached in `data/cache/`.
+
+Main findings:
+
+- FactBench on Zenodo: ~51% of the statements are merged, so the dataset is not usable as published.
+- BPDP: all false statements swap place of birth and place of death; FAVEL-DS: false statements replace the object.
+- ~10% of the entity mentions in BPDP point to a wrong Wikidata item (London, Rome, Cambridge, ...).
+- A full run with one 14B model would take hundreds of hours, so the models will be compared on a fixed subset.
+
+The last cell writes `dashboard/src/data/eda_summary.json`, which the dashboard reads:
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+The charts are [bklit](https://bklit.com) components (shadcn registry) in `dashboard/src/components/charts/`.
+
 ## Running the paragraph simplification step
 
 ```bash
@@ -96,6 +132,7 @@ Without these flags the script behaves like the original.
 
 - [x] repo structure, environment, data download
 - [x] extractor runs end to end on a Mac (tested with `--limit 1 --max-links 2`)
+- [x] exploratory analysis of the datasets (milestone 2)
+- [ ] fixed subset for the model comparison
 - [ ] baseline run with `deepseek-r1:14b`
-- [ ] exploratory analysis of the datasets (milestone 2)
 - [ ] smaller / quantized models

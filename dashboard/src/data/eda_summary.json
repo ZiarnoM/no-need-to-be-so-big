@@ -1,0 +1,274 @@
+{
+ "integrity": [
+  {
+   "name": "BPDP train",
+   "clean": 200,
+   "merged": 0
+  },
+  {
+   "name": "BPDP test",
+   "clean": 206,
+   "merged": 0
+  },
+  {
+   "name": "FactBench train",
+   "clean": 335,
+   "merged": 345
+  },
+  {
+   "name": "FactBench test",
+   "clean": 335,
+   "merged": 349
+  },
+  {
+   "name": "FAVEL-DS train",
+   "clean": 765,
+   "merged": 0
+  },
+  {
+   "name": "FAVEL-DS test",
+   "clean": 327,
+   "merged": 0
+  }
+ ],
+ "predicates": {
+  "BPDP": [
+   {
+    "name": "place of death",
+    "true": 102,
+    "false": 101
+   },
+   {
+    "name": "place of birth",
+    "true": 101,
+    "false": 102
+   }
+  ],
+  "FAVEL-DS": [
+   {
+    "name": "production company",
+    "true": 50,
+    "false": 50
+   },
+   {
+    "name": "producer",
+    "true": 50,
+    "false": 50
+   },
+   {
+    "name": "place of birth",
+    "true": 50,
+    "false": 50
+   },
+   {
+    "name": "located in the administrative territorial entity",
+    "true": 50,
+    "false": 50
+   },
+   {
+    "name": "director",
+    "true": 50,
+    "false": 50
+   },
+   {
+    "name": "cast member",
+    "true": 50,
+    "false": 50
+   },
+   {
+    "name": "place of death",
+    "true": 49,
+    "false": 50
+   },
+   {
+    "name": "is the study of",
+    "true": 49,
+    "false": 50
+   },
+   {
+    "name": "affiliation",
+    "true": 49,
+    "false": 50
+   },
+   {
+    "name": "award received",
+    "true": 49,
+    "false": 49
+   },
+   {
+    "name": "head of government",
+    "true": 47,
+    "false": 50
+   }
+  ]
+ },
+ "corruption": {
+  "BPDP": {
+   "predicate swapped": 203
+  },
+  "FAVEL-DS": {
+   "no matching true statement": 6,
+   "object replaced": 519,
+   "predicate swapped": 23,
+   "subject replaced": 1
+  }
+ },
+ "coverage": {
+  "BPDP": 0.9224489795918367,
+  "FAVEL-DS": 0.9771380186282811
+ },
+ "links": {
+  "BPDP": [
+   23,
+   25,
+   48,
+   113,
+   115,
+   119,
+   133,
+   141,
+   142,
+   152,
+   169,
+   179,
+   189,
+   191,
+   191,
+   196,
+   215,
+   228,
+   283,
+   285,
+   286,
+   367,
+   372,
+   390,
+   391,
+   394,
+   395,
+   408,
+   455,
+   467,
+   548,
+   611,
+   613,
+   632,
+   729,
+   746,
+   750,
+   821,
+   851,
+   872,
+   960,
+   970,
+   981,
+   1030,
+   1057,
+   1087,
+   1120,
+   1177,
+   1211,
+   1252,
+   1359,
+   1411,
+   1450,
+   1466,
+   1487,
+   1770,
+   1810,
+   2091,
+   2130,
+   2722
+  ],
+  "FAVEL-DS": [
+   12,
+   25,
+   26,
+   32,
+   32,
+   39,
+   44,
+   56,
+   57,
+   69,
+   92,
+   99,
+   101,
+   106,
+   112,
+   117,
+   120,
+   129,
+   129,
+   147,
+   151,
+   170,
+   171,
+   175,
+   180,
+   206,
+   213,
+   228,
+   228,
+   238,
+   256,
+   260,
+   284,
+   291,
+   334,
+   346,
+   346,
+   362,
+   362,
+   417,
+   490,
+   545,
+   545,
+   573,
+   593,
+   611,
+   611,
+   619,
+   651,
+   654,
+   758,
+   792,
+   796,
+   805,
+   811,
+   970,
+   1173,
+   1302,
+   1385,
+   1968
+  ]
+ },
+ "cost": {
+  "BPDP": {
+   "true statements": 203,
+   "entities with article": 226,
+   "LLM calls (lower)": 24408,
+   "LLM calls (upper)": 289856,
+   "hours (lower)": 47,
+   "hours (upper)": 564
+  },
+  "FAVEL-DS": {
+   "true statements": 543,
+   "entities with article": 770,
+   "LLM calls (lower)": 83160,
+   "LLM calls (upper)": 424879,
+   "hours (lower)": 162,
+   "hours (upper)": 826
+  }
+ },
+ "evidence": {
+  "BPDP": {
+   "true": 0.8522167487684729,
+   "false": 0.8522167487684729
+  },
+  "FAVEL-DS": {
+   "true": 0.68,
+   "false": 0.73
+  }
+ }
+}
