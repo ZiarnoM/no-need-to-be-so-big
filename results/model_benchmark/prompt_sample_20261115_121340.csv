@@ -1,0 +1,31 @@
+prompt_id,page_title,page_type,entity_pair,input_chars,input_words
+P001,Adhan,linked_page,adam mickiewicz_constantinople,20422,3327
+P002,Winnipeg,entity_page,a. e. van vogt_winnipeg,41032,6406
+P003,Lithuania_Governorate,entity_page,adam mickiewicz_lithuania governorate,846,126
+P004,20th Century Fox,linked_page,a. e. van vogt_winnipeg,56952,9008
+P005,Aeolic Greek,linked_page,aeschylus_elefsina,9874,1444
+P006,Acarnanian League,linked_page,aeschylus_elefsina,4302,672
+P007,1951 Pan American Games,linked_page,a. e. van vogt_winnipeg,2111,342
+P008,Canal Hollywood,linked_page,a. e. van vogt_hollywood,837,137
+P009,"Adam Mickiewicz Monument, Kraków",linked_page,adam mickiewicz_lithuania governorate,2504,405
+P010,Adam_Mickiewicz,entity_page,adam mickiewicz_lithuania governorate,34731,5461
+P011,Amur Oblast (Russian Empire),linked_page,adam mickiewicz_lithuania governorate,8254,1308
+P012,Arkhangelsk Governorate,linked_page,adam mickiewicz_lithuania governorate,7466,1003
+P013,Achaean League,linked_page,aeschylus_elefsina,22382,3515
+P014,1967 Pan American Games,linked_page,a. e. van vogt_winnipeg,1885,331
+P015,Adile Sultan Palace,linked_page,adam mickiewicz_constantinople,3360,581
+P016,Achaemenid Empire,linked_page,adam mickiewicz_constantinople,73714,11859
+P017,Ahmed Bican Yazıcıoğlu,linked_page,adam mickiewicz_constantinople,4101,659
+P018,Aegisthus,linked_page,aeschylus_elefsina,6482,1054
+P019,Azov Governorate,linked_page,adam mickiewicz_lithuania governorate,3441,504
+P020,Acritic songs,linked_page,adam mickiewicz_constantinople,7128,1128
+P021,Astrakhan Governorate,linked_page,adam mickiewicz_lithuania governorate,4127,669
+P022,Gela,linked_page,aeschylus_gela (river),13850,2310
+P023,Aegina,linked_page,aeschylus_elefsina,35528,5844
+P024,Aeschylus,entity_page,aeschylus_elefsina,32620,5147
+P025,1968 Polish political crisis,linked_page,adam mickiewicz_lithuania governorate,42588,6459
+P026,Analog Science Fiction and Fact,linked_page,a. e. van vogt_winnipeg,46939,7522
+P027,Adam Asnyk,linked_page,adam mickiewicz_lithuania governorate,2415,405
+P028,Aeolian Islands,linked_page,aeschylus_elefsina,10856,1761
+P029,Daisy (Dog's Eye View album),linked_page,a. e. van vogt_hollywood,1123,201
+P030,Akmolinsk Oblast (Russian Empire),linked_page,adam mickiewicz_lithuania governorate,963,150
